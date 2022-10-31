@@ -7,9 +7,15 @@ SHELL ["/bin/bash", "-c"]
 #------------------------------------------------------------------------------#
 # References:
 # - https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start/
+#
+# Minimal setup
+RUN apt-get update && \
+    apt-get install -y locales lsb-release
+ARG DEBIAN_FRONTEND=noninteractive
+RUN dpkg-reconfigure locales
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+    apt-get install -y \
             # Gazebo11
             ros-foxy-gazebo-* \
             # Cartographer
@@ -32,6 +38,7 @@ ENV ROS_DOMAIN_ID=30
 # References:
 # - https://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/
 # - https://github.com/ros2/ros2/issues/710
+# - https://docs.ros.org/en/foxy/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html
 
 RUN mkdir -p /root/turtlebot3_ws/src/ && \
     cd /root/turtlebot3_ws/src/ && \
@@ -42,4 +49,8 @@ RUN mkdir -p /root/turtlebot3_ws/src/ && \
 
 WORKDIR /root/turtlebot3_ws
 
-CMD source /opt/ros/foxy/setup.bash && ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py
+    # source the "ROS2 underlay"
+CMD source /opt/ros/foxy/setup.bash && \
+    # source the "workspace overlay"
+    . install/local_setup.bash && \
+    ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py

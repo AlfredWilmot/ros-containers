@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  gazebo:
+    container_name: gazebo
+    image: ros2-foxy:gazebo
+    build: ./gazebo-sim/.
+    privileged: true
+    user: root
+    #restart: always
+    environment:
+      - DISPLAY=$DISPLAY
+      - XAUTHORITY=$XAUTHORITY
+      - TURTLEBOT3_MODEL=burger
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    networks:
+      - ros
+
+networks:
+  ros:
+    driver: bridge

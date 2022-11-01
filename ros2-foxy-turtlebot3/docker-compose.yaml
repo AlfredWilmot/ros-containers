@@ -1,6 +1,7 @@
 version: '3.3'
 
 services:
+
   gazebo:
     container_name: gazebo
     image: ros2-foxy:gazebo
@@ -16,6 +17,23 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
     networks:
       - ros
+    command: ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py
+
+  teleop:
+    container_name: teleop
+    image: ros2-foxy:gazebo
+    build: ./gazebo-sim/.
+    privileged: true
+    user: root
+    environment:
+      - DISPLAY=$DISPLAY
+      - XAUTHORITY=$XAUTHORITY
+      - TURTLEBOT3_MODEL=burger
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    networks:
+      - ros
+    command: rqt -s rqt_robot_steering/RobotSteering
 
 networks:
   ros:

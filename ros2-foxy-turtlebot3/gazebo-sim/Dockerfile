@@ -47,10 +47,16 @@ RUN mkdir -p /root/turtlebot3_ws/src/ && \
     source /opt/ros/foxy/setup.bash && \
     colcon build --symlink-install
 
+# Installing other deps
+
+RUN apt-get update && \
+    apt-get install -y \
+            ros-foxy-rqt*
+
 WORKDIR /root/turtlebot3_ws
 
-    # source the "ROS2 underlay"
-CMD source /opt/ros/foxy/setup.bash && \
-    # source the "workspace overlay"
-    . install/local_setup.bash && \
-    ros2 launch turtlebot3_gazebo turtlebot3_house.launch.py
+# setup entrypoint, set executable bit
+COPY ./ros_entrypoint.sh /
+RUN bash -c "chmod +x /ros_entrypoint.sh"
+
+ENTRYPOINT ["/ros_entrypoint.sh"]

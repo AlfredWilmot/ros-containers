@@ -23,6 +23,11 @@ as the `docker-compose.yaml` file containing the demo you want to execute:
 docker-compose up -d 
 ```
 
+When you're done, you can tear-down the running containers with:
+```bash
+docker-compose down
+```
+
 ### Demos ###
 Two containers running ROS2 (foxy) GUI applications (Gazebo11 and RQT) to control a Turtlebot3 sim:
 ![Alt Text](./ros2-foxy-turtlebot3/burger-explores-his-home.gif)

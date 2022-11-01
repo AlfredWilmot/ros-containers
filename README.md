@@ -9,7 +9,7 @@ In order to run the demos below, some prerequisites are needed first.
 Install docker prerequisites:
 ```bash
 chmod +x ubuntu_20_04_setup.sh
-. setup.sh
+. ubuntu_20_04_setup.sh
 ```
 Allow the container to access the host machine's X-server (DISPLAY), \
 **this has to be done whenever starting a new terminal session**:
